@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
 
 ts = [k / 27 for k in range(28)]
 xs = [15.5, 12.5, 8, 10, 7, 4, 8, 10, 9.5, 14, 18, 17, 22, 25, 19, 24.5, 23, 17, 16, 12.5, 16.5, 21, 17, 11, 5.5, 7.5, 10, 12]
@@ -28,19 +27,13 @@ def eval_pq(lambdas):
 
     return p, q
 
-def eval_d(xs, ys):
-    d = [0]
+def eval_u(lambdas, p):
+    u = [0]
     for i in range(1, len(xs) - 1):
         f1 = (ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i])
         f2 = (ys[i] - ys[i - 1]) / (xs[i] - xs[i - 1])
-        d.append(6 * ((f1 - f2) / (xs[i + 1] - xs[i - 1])))
-    
-    return d
-
-def eval_u(d, lambdas, p):
-    u = [0]
-    for i in range(1, len(d)):
-        u.append((d[i] - lambdas[i] * u[i - 1]) / p[i])
+        d = 6 * ((f1 - f2) / (xs[i + 1] - xs[i - 1]))
+        u.append((d - lambdas[i] * u[i - 1]) / p[i])
     
     return u
 
@@ -63,8 +56,7 @@ def eval_sk(h, M, x, xs, ys, k):
         ) / h[k]
 
 def eval_s(x, y, p, q, lamb, h, xs):
-    d = eval_d(x, y)
-    u = eval_u(d, lamb, p)
+    u = eval_u(lamb, p)
     M = eval_M(u, q)
 
     ys = []
