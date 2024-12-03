@@ -62,10 +62,9 @@ def eval_s(x, y, p, q, lamb, h, xs):
     ys = []
     i = 1
     for xk in xs:
-        if (xk >= x[i-1]) and (xk <= x[i]):
-            ys.append(eval_sk(h, M, xk, x, y, i))
-        if xk > x[i]:
+        if (xk > x[i]):
             i += 1
+        else:
             ys.append(eval_sk(h, M, xk, x, y, i))
 
     return ys
@@ -75,10 +74,9 @@ lamb = eval_lambda(ts)
 p, q = eval_pq(lamb)
 h = eval_h(ts)
 
-fig, ax = plt.subplots()
 a = [k/100 for k in range(100)]
 x_result = eval_s(ts, xs, p, q, lamb, h, a)
 y_result = eval_s(ts, ys, p, q, lamb, h, a)
 
-ax.plot(x_result, y_result, color='red')
+plt.plot(x_result, y_result, color='red')
 plt.show()
