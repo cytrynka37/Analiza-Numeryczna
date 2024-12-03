@@ -55,17 +55,17 @@ def eval_sk(h, M, x, xs, ys, k):
         + (ys[k] - (1/6) * M[k] * h[k] ** 2) * (x - xs[k - 1])
         ) / h[k]
 
-def eval_s(x, y, p, q, lamb, h, xs):
+def eval_s(x, y, p, q, lamb, h):
     u = eval_u(lamb, p)
     M = eval_M(u, q)
-
     ys = []
     i = 1
-    for xk in xs:
-        if (xk > x[i]):
+    a = 150
+    for k in range(a):
+        if (k/a > x[i]):
             i += 1
         else:
-            ys.append(eval_sk(h, M, xk, x, y, i))
+            ys.append(eval_sk(h, M, k/a, x, y, i))
 
     return ys
 
@@ -74,9 +74,8 @@ lamb = eval_lambda(ts)
 p, q = eval_pq(lamb)
 h = eval_h(ts)
 
-a = [k/100 for k in range(100)]
-x_result = eval_s(ts, xs, p, q, lamb, h, a)
-y_result = eval_s(ts, ys, p, q, lamb, h, a)
+x_result = eval_s(ts, xs, p, q, lamb, h)
+y_result = eval_s(ts, ys, p, q, lamb, h)
 
 plt.plot(x_result, y_result, color='red')
-plt.show()
+plt.savefig("zagadka.png")
